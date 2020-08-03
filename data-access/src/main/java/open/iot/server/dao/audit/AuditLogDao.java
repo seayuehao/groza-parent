@@ -10,11 +10,7 @@ import open.iot.server.common.data.page.TimePageLink;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 19-2-1 上午11:13
- * @description
- */
+
 public interface AuditLogDao {
 
     ListenableFuture<Void> saveByTenantId(AuditLog auditLog);

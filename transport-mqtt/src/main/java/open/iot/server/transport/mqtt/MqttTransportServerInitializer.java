@@ -13,10 +13,7 @@ import io.netty.handler.codec.mqtt.MqttDecoder;
 import io.netty.handler.codec.mqtt.MqttEncoder;
 import io.netty.handler.ssl.SslHandler;
 
-/**
- * @author james mu
- * @date 19-1-2 下午2:24
- */
+
 public class MqttTransportServerInitializer extends ChannelInitializer<SocketChannel> {
 
     private final SessionMsgProcessor processor;

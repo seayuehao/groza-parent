@@ -31,22 +31,25 @@ import open.iot.server.common.transport.adaptor.AdaptorException;
 import open.iot.server.common.transport.adaptor.JsonConverter;
 import open.iot.server.transport.coap.CoapTransportResource;
 import open.iot.server.transport.coap.session.CoapSessionCtx;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-/**
- * @author james mu
- * @date 19-1-21 下午5:38
- */
+
 @Component("JsonCoapAdaptor")
-@Slf4j
-public class JsonCoapAdaptor implements CoapTransportAdaptor{
+public class JsonCoapAdaptor implements CoapTransportAdaptor {
+
+    private static final Logger log = LoggerFactory.getLogger("JsonCoapAdaptor");
 
     @Override
     public AdaptorToSessionActorMsg convertToActorMsg(CoapSessionCtx ctx, SessionMsgType type, Request inbound) throws AdaptorException {
@@ -143,7 +146,7 @@ public class JsonCoapAdaptor implements CoapTransportAdaptor{
     }
 
     private Response convertNotificationResponse(CoapSessionCtx ctx, AttributesUpdateNotification msg) {
-        return getObserveNotification(ctx,JsonConverter.toJson(msg.getData(), false));
+        return getObserveNotification(ctx, JsonConverter.toJson(msg.getData(), false));
     }
 
     private Response convertToDeviceRpcRequest(CoapSessionCtx ctx, ToDeviceRpcRequestMsg msg) {

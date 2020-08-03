@@ -6,7 +6,6 @@ import open.iot.server.common.data.id.TenantId;
 import open.iot.server.common.data.page.TextPageData;
 import open.iot.server.common.data.page.TextPageLink;
 import open.iot.server.dao.tenant.TenantService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,13 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author james mu
- * @date 19-1-24 下午4:21
- */
 @RestController
 @RequestMapping("/api")
-@Slf4j
 public class TenantController extends BaseController {
 
     @Autowired
@@ -48,8 +42,7 @@ public class TenantController extends BaseController {
         try {
             boolean newTenant = tenant.getId() == null;
             tenant = checkNotNull(tenantService.saveTenant(tenant));
-            if (newTenant){
-                //TODO
+            if (newTenant) {
             }
             return tenant;
         } catch (Exception e) {

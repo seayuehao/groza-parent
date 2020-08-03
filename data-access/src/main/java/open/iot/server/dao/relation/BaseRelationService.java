@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-22 上午11:17
- */
+
 @Service
 @SqlDao
 public class BaseRelationService implements RelationService {

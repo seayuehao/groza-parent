@@ -13,7 +13,6 @@ import open.iot.server.common.transport.adaptor.JsonConverter;
 import open.iot.server.common.transport.auth.DeviceAuthService;
 import open.iot.server.common.transport.quota.host.HostRequestsQuotaService;
 import open.iot.server.dao.attributes.AttributesService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,12 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-/**
- * @author james mu
- */
 @RestController
 @RequestMapping("/api/v1")
-@Slf4j
 public class DeviceApiController {
 
     @Value("${http.request_timeout}")
@@ -56,8 +51,8 @@ public class DeviceApiController {
 
     @RequestMapping(value = "/{deviceToken}/attributes", method = RequestMethod.POST)
     public DeferredResult<ResponseEntity> postDeviceAttributes(
-        @PathVariable("deviceToken") String deviceToken,
-        @RequestBody String json) {
+            @PathVariable("deviceToken") String deviceToken,
+            @RequestBody String json) {
         DeferredResult<ResponseEntity> responseWriter = new DeferredResult<ResponseEntity>();
         responseWriter.setResult(new ResponseEntity<>(HttpStatus.ACCEPTED));
         Set<AttributeKvEntry> attributeKvEntrySet = JsonConverter.convertToAttributes(new JsonParser().parse(json)).getAttributes();
@@ -81,7 +76,6 @@ public class DeviceApiController {
             }
         }
         return responseWriter;
-
     }
 
     @RequestMapping(value = "/testAttribute", method = RequestMethod.POST)

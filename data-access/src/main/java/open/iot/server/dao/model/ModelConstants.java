@@ -8,10 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 18-12-21 下午3:17
- */
+
 public class ModelConstants {
 
     private ModelConstants() {

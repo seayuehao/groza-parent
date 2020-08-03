@@ -1,5 +1,10 @@
 package open.iot.server.transport.mqtt.session;
 
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.mqtt.MqttFixedHeader;
+import io.netty.handler.codec.mqtt.MqttMessage;
+import io.netty.handler.codec.mqtt.MqttMessageType;
+import io.netty.handler.codec.mqtt.MqttQoS;
 import open.iot.server.common.data.id.SessionId;
 import open.iot.server.common.msg.session.SessionActorToAdaptorMsg;
 import open.iot.server.common.msg.session.SessionCtrlMsg;
@@ -11,22 +16,16 @@ import open.iot.server.common.transport.adaptor.AdaptorException;
 import open.iot.server.common.transport.auth.DeviceAuthService;
 import open.iot.server.transport.mqtt.MqttTopicMatcher;
 import open.iot.server.transport.mqtt.adaptors.MqttTransportAdaptor;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.mqtt.MqttFixedHeader;
-import io.netty.handler.codec.mqtt.MqttMessage;
-import io.netty.handler.codec.mqtt.MqttMessageType;
-import io.netty.handler.codec.mqtt.MqttQoS;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @author james mu
- * @date 19-1-23 上午9:34
- */
-@Slf4j
+
 public class DeviceSessionCtx extends MqttDeviceAwareSessionContext {
+
+    private static final Logger log = LoggerFactory.getLogger("DeviceSessionCtx");
 
     private final MqttTransportAdaptor adaptor;
     private final MqttSessionId sessionId;
@@ -34,7 +33,7 @@ public class DeviceSessionCtx extends MqttDeviceAwareSessionContext {
     private volatile boolean allowAttributeResponses;
     private AtomicInteger msgIdSeq = new AtomicInteger(0);
 
-    public DeviceSessionCtx(SessionMsgProcessor processor, DeviceAuthService authService, MqttTransportAdaptor adaptor, ConcurrentMap<MqttTopicMatcher, Integer> mqttQoSMap){
+    public DeviceSessionCtx(SessionMsgProcessor processor, DeviceAuthService authService, MqttTransportAdaptor adaptor, ConcurrentMap<MqttTopicMatcher, Integer> mqttQoSMap) {
         super(processor, authService, mqttQoSMap);
         this.adaptor = adaptor;
         this.sessionId = new MqttSessionId();
@@ -50,7 +49,6 @@ public class DeviceSessionCtx extends MqttDeviceAwareSessionContext {
         try {
             adaptor.convertToAdaptorMsg(this, msg).ifPresent(this::pushToNetwork);
         } catch (AdaptorException e) {
-            //TODO: close channel with disconnect;
             logAndWrap(e);
         }
     }
@@ -60,19 +58,17 @@ public class DeviceSessionCtx extends MqttDeviceAwareSessionContext {
         throw new SessionException(e);
     }
 
-
-    private void pushToNetwork(MqttMessage msg){
+    private void pushToNetwork(MqttMessage msg) {
         channel.writeAndFlush(msg);
     }
 
     @Override
     public void onMsg(SessionCtrlMsg msg) throws SessionException {
-        if (msg instanceof SessionCloseMsg){
+        if (msg instanceof SessionCloseMsg) {
             pushToNetwork(new MqttMessage(new MqttFixedHeader(MqttMessageType.DISCONNECT, false, MqttQoS.AT_MOST_ONCE, false, 0)));
             channel.close();
         }
     }
-
 
     @Override
     public boolean isClosed() {

@@ -5,11 +5,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Date;
 
-/**
- * @author james mu
- * @date 19-3-18 下午6:11
- * @description
- */
+
 public class GrozaErrorResponse {
     // HTTP Response Status Code
     private final HttpStatus status;

@@ -13,11 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 19-2-20 下午3:57
- * @description
- */
+
 @Component
 @SqlDao
 public class JpaUserCredentialsDao extends JpaAbstractDao<UserCredentialsEntity, UserCredentials> implements UserCredentialsDao {

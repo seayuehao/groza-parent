@@ -6,11 +6,7 @@ import open.iot.server.common.data.audit.ActionType;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author james mu
- * @date 19-2-1 下午2:18
- * @description
- */
+
 public class AuditLogLevelFilter {
 
     private Map<EntityType, AuditLogLevelMask> entityTypeMask = new HashMap<>();

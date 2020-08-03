@@ -9,11 +9,6 @@ import open.iot.server.common.data.page.TextPageData;
 import open.iot.server.common.data.page.TextPageLink;
 import open.iot.server.common.data.security.UserCredentials;
 
-/**
- * @author james mu
- * @date 19-2-20 下午2:27
- * @description
- */
 public interface UserService {
 
     User findUserById(UserId userId);

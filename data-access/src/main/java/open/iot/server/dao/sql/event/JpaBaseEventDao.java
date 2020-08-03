@@ -9,12 +9,13 @@ import open.iot.server.common.data.id.EventId;
 import open.iot.server.common.data.page.TimePageLink;
 import open.iot.server.dao.DaoUtil;
 import open.iot.server.dao.event.EventDao;
+import open.iot.server.dao.model.ModelConstants;
 import open.iot.server.dao.model.sql.EventEntity;
 import open.iot.server.dao.sql.JpaAbstractSearchTimeDao;
 import open.iot.server.dao.util.SqlDao;
-import lombok.extern.slf4j.Slf4j;
-import open.iot.server.dao.model.ModelConstants;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +32,12 @@ import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
-/**
- * @author james mu
- * @date 19-1-8 下午3:13
- */
+
 @SqlDao
-@Slf4j
 @Component
 public class JpaBaseEventDao extends JpaAbstractSearchTimeDao<EventEntity, Event> implements EventDao {
+
+    private static final Logger log = LoggerFactory.getLogger("JpaBaseEventDao");
 
     private final UUID systemTenantId = ModelConstants.NULL_UUID;
 
@@ -87,7 +86,7 @@ public class JpaBaseEventDao extends JpaAbstractSearchTimeDao<EventEntity, Event
     @Override
     public Event findEvent(UUID tenantId, EntityId entityId, String eventType, String eventUid) {
         return DaoUtil.getData(eventRepository.findByTenantIdAndEntityTypeAndEntityIdAndEventTypeAndEventUid(
-            UUIDConverter.fromTimeUUID(tenantId), entityId.getEntityType(), UUIDConverter.fromTimeUUID(entityId.getId()), eventType, eventUid));
+                UUIDConverter.fromTimeUUID(tenantId), entityId.getEntityType(), UUIDConverter.fromTimeUUID(entityId.getId()), eventType, eventUid));
     }
 
     @Override
@@ -107,10 +106,10 @@ public class JpaBaseEventDao extends JpaAbstractSearchTimeDao<EventEntity, Event
     @Override
     public List<Event> findLatestEvents(UUID tenantId, EntityId entityId, String eventType, int limit) {
         List<EventEntity> latest = eventRepository.findLatestByTenantIdAndEntityTypeAndEntityIdAndEventType(
-            UUIDConverter.fromTimeUUID(tenantId),
-            entityId.getEntityType(),
-            UUIDConverter.fromTimeUUID(entityId.getId()),
-            eventType, PageRequest.of(0, limit));
+                UUIDConverter.fromTimeUUID(tenantId),
+                entityId.getEntityType(),
+                UUIDConverter.fromTimeUUID(entityId.getId()),
+                eventType, PageRequest.of(0, limit));
         return DaoUtil.convertDataList(latest);
     }
 
@@ -127,7 +126,7 @@ public class JpaBaseEventDao extends JpaAbstractSearchTimeDao<EventEntity, Event
             entity.setEventUid(entity.getId().toString());
         }
         if (ifNotExists &&
-            eventRepository.findByTenantIdAndEntityTypeAndEntityId(entity.getTenantId(), entity.getEntityType(), entity.getEntityId()) != null) {
+                eventRepository.findByTenantIdAndEntityTypeAndEntityId(entity.getTenantId(), entity.getEntityType(), entity.getEntityId()) != null) {
             return Optional.empty();
         }
         return Optional.of(DaoUtil.getData(eventRepository.save(entity)));

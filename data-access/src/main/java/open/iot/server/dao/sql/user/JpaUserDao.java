@@ -20,11 +20,7 @@ import java.util.UUID;
 
 import static open.iot.server.common.data.UUIDConverter.fromTimeUUID;
 
-/**
- * @author james mu
- * @date 19-2-20 下午4:06
- * @description
- */
+
 @SqlDao
 @Component
 public class JpaUserDao extends JpaAbstractSearchTextDao<UserEntity, User> implements UserDao {

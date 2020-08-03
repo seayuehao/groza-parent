@@ -11,20 +11,18 @@ import open.iot.server.common.transport.adaptor.AdaptorException;
 import open.iot.server.common.transport.auth.DeviceAuthService;
 import open.iot.server.common.transport.session.DeviceAwareSessionContext;
 import open.iot.server.transport.coap.adaptors.CoapTransportAdaptor;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @author james mu
- * @date 19-1-21 下午3:57
- */
-@Slf4j
-public class CoapSessionCtx  extends DeviceAwareSessionContext {
+public class CoapSessionCtx extends DeviceAwareSessionContext {
+
+    private static final Logger log = LoggerFactory.getLogger("CoapSessionCtx");
 
     private final SessionId sessionId;
     private final CoapExchange exchange;

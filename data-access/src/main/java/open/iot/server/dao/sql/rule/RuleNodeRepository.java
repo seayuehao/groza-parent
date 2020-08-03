@@ -4,11 +4,6 @@ import open.iot.server.dao.model.sql.RuleNodeEntity;
 import open.iot.server.dao.util.SqlDao;
 import org.springframework.data.repository.CrudRepository;
 
-/**
- * @author james mu
- * @date 19-2-25 上午11:18
- * @description
- */
 @SqlDao
-public interface RuleNodeRepository extends CrudRepository<RuleNodeEntity,String> {
+public interface RuleNodeRepository extends CrudRepository<RuleNodeEntity, String> {
 }

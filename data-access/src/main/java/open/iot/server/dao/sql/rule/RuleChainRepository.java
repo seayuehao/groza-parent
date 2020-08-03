@@ -9,11 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-2-25 上午11:03
- * @description
- */
+
 @SqlDao
 public interface RuleChainRepository extends CrudRepository<RuleChainEntity, String> {
 

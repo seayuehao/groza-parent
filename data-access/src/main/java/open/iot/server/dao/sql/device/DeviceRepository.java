@@ -9,10 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 18-12-21 下午5:06
- */
+
 @SqlDao
 public interface DeviceRepository extends CrudRepository<DeviceEntity,String> {
 

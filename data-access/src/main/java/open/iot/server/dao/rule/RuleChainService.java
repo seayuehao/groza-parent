@@ -13,11 +13,7 @@ import open.iot.server.common.data.rule.RuleNode;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-2-25 上午10:54
- * @description
- */
+
 public interface RuleChainService {
 
     RuleChain saveRuleChain(RuleChain ruleChain);

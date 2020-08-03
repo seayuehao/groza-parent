@@ -29,8 +29,9 @@ import open.iot.server.dao.audit.sink.AuditLogSink;
 import open.iot.server.dao.entity.EntityService;
 import open.iot.server.dao.exception.DataValidationException;
 import open.iot.server.dao.service.DataValidator;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -42,24 +43,22 @@ import java.util.List;
 import static open.iot.server.dao.service.Validator.validateEntityId;
 import static open.iot.server.dao.service.Validator.validateId;
 
-/**
- * @author james mu
- * @date 19-2-1 下午2:01
- * @description
- */
-@Slf4j
+
 @Service
 @ConditionalOnProperty(prefix = "audit_log", value = "enabled", havingValue = "true")
 public class AuditLogServiceImpl implements AuditLogService {
 
+    private static final Logger log = LoggerFactory.getLogger("AuditLogServiceImpl");
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String INCORRECT_TENANT_ID = "Incorrect tenantId";
-    private static final int INSERTS_PER_ENTRY= 3;
+    private static final int INSERTS_PER_ENTRY = 3;
 
     @Autowired
     private AuditLogDao auditLogDao;
 
+    @Autowired
     private AuditLogLevelFilter auditLogLevelFilter;
 
     @Autowired
@@ -116,7 +115,8 @@ public class AuditLogServiceImpl implements AuditLogService {
             } else {
                 try {
                     entityName = entityService.fetchEntityNameAsync(entityId).get();
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                }
             }
             if (e != null) {
                 actionStatus = ActionStatus.FAILURE;
@@ -149,7 +149,7 @@ public class AuditLogServiceImpl implements AuditLogService {
                                                                                                            ActionType actionType,
                                                                                                            Object... additionalInfo) {
         ObjectNode actionData = objectMapper.createObjectNode();
-        switch(actionType) {
+        switch (actionType) {
             case ADDED:
             case UPDATED:
                 if (entity != null) {
@@ -193,7 +193,7 @@ public class AuditLogServiceImpl implements AuditLogService {
                 scope = extractParameter(String.class, 0, additionalInfo);
                 actionData.put("scope", scope);
                 List<String> keys = extractParameter(List.class, 1, additionalInfo);
-                ArrayNode attrsArrayNode =  actionData.putArray("attributes");
+                ArrayNode attrsArrayNode = actionData.putArray("attributes");
                 if (keys != null) {
                     keys.forEach(attrsArrayNode::add);
                 }

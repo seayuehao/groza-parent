@@ -6,11 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
-/**
- * @author james mu
- * @date 19-3-18 下午3:11
- * @description
- */
+
 @Configuration
 public class GrozaMessageConfiguration {
 

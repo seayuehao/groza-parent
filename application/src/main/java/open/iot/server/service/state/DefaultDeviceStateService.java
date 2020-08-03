@@ -5,20 +5,14 @@ import open.iot.server.common.data.Device;
 import open.iot.server.common.data.id.DeviceId;
 import open.iot.server.dao.device.DeviceService;
 import open.iot.server.dao.tenant.TenantService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-/**
- * @Author: 穆书伟
- * @Date: 19-4-8 下午1:32
- * @Version 1.0
- */
+
 @Service
-@Slf4j
 public class DefaultDeviceStateService implements DeviceStateService {
 
     private ListeningScheduledExecutorService queueExecutor;

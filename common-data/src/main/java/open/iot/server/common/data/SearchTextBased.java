@@ -3,10 +3,7 @@ package open.iot.server.common.data;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import open.iot.server.common.data.id.UUIDBased;
 
-/**
- * @author james mu
- * @date 18-12-13 下午4:38
- */
+
 public abstract class SearchTextBased<I extends UUIDBased> extends BaseData<I> {
 
     private static final long serialVersionUID = -539812997348227609L;

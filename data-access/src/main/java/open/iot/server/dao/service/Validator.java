@@ -8,10 +8,7 @@ import open.iot.server.dao.exception.IncorrectParameterException;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 18-12-11 下午1:26
- */
+
 public class Validator {
 
     /**

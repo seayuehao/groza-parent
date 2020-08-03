@@ -14,10 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 19-1-8 下午3:15
- */
+
 public abstract class JpaAbstractSearchTimeDao<E extends BaseEntity<D>, D> extends JpaAbstractDao<E, D> {
 
     public static <T> Specification<T> getTimeSearchPageSpec(TimePageLink pageLink, String idColumn) {

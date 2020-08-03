@@ -10,8 +10,9 @@ import open.iot.server.dao.exception.DataValidationException;
 import open.iot.server.dao.service.DataValidator;
 import open.iot.server.dao.service.PaginatedRemover;
 import open.iot.server.dao.service.Validator;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,11 @@ import java.util.List;
 
 import static open.iot.server.dao.service.Validator.validateId;
 
-/**
- * @author james mu
- * @date 19-1-24 下午3:42
- */
+
 @Service
-@Slf4j
-public class TenantServiceImpl extends AbstractEntityService implements TenantService{
+public class TenantServiceImpl extends AbstractEntityService implements TenantService {
+
+    private static final Logger log = LoggerFactory.getLogger("TenantService");
 
     private static final String DEFAULT_TENANT_REGION = "Global";
     public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
@@ -35,7 +34,7 @@ public class TenantServiceImpl extends AbstractEntityService implements TenantSe
 
     @Override
     public Tenant findTenantById(TenantId tenantId) {
-        log.trace("Executing findTenantById [{}]",tenantId);
+        log.trace("Executing findTenantById [{}]", tenantId);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         return tenantDao.findById(tenantId.getId());
     }
@@ -55,7 +54,6 @@ public class TenantServiceImpl extends AbstractEntityService implements TenantSe
         return tenantDao.save(tenant);
     }
 
-    // TODO  tenant need something to do
     @Override
     public void deleteTenant(TenantId tenantId) {
 
@@ -87,7 +85,7 @@ public class TenantServiceImpl extends AbstractEntityService implements TenantSe
                         validateEmail(tenant.getEmail());
                     }
                 }
-    };
+            };
 
     private PaginatedRemover<String, Tenant> tenantsRemover =
             new PaginatedRemover<String, Tenant>() {

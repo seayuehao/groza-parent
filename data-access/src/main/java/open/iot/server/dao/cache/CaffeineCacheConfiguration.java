@@ -2,7 +2,6 @@ package open.iot.server.dao.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Ticker;
-import lombok.Data;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.CacheManager;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 @ConditionalOnProperty(prefix = "cache", value = "type", havingValue = "caffeine", matchIfMissing = true)
 @ConfigurationProperties(prefix = "caffeine")
 @EnableCaching
-@Data
 public class CaffeineCacheConfiguration {
 
     private Map<String, CacheSpecs> specs;
@@ -48,6 +46,14 @@ public class CaffeineCacheConfiguration {
                 .maximumSize(cacheSpecs.getMaxSize())
                 .ticker(ticker());
         return new CaffeineCache(name, caffeineBuilder.build());
+    }
+
+    public void setSpecs(Map<String, CacheSpecs> specs) {
+        this.specs = specs;
+    }
+
+    public Map<String, CacheSpecs> getSpecs() {
+        return specs;
     }
 
     @Bean

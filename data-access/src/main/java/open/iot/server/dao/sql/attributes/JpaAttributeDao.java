@@ -12,7 +12,6 @@ import open.iot.server.dao.model.sql.AttributeKvCompositeKey;
 import open.iot.server.dao.model.sql.AttributeKvEntity;
 import open.iot.server.dao.sql.JpaAbstractDaoListeningExecutorService;
 import open.iot.server.dao.util.SqlDao;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +22,8 @@ import java.util.stream.Collectors;
 
 import static open.iot.server.common.data.UUIDConverter.fromTimeUUID;
 
-/**
- * @author james mu
- * @date 18-12-11 下午2:19
- */
+
 @Component
-@Slf4j
 @SqlDao
 public class JpaAttributeDao extends JpaAbstractDaoListeningExecutorService implements AttributesDao {
 
@@ -104,7 +99,7 @@ public class JpaAttributeDao extends JpaAbstractDaoListeningExecutorService impl
         });
     }
 
-    private AttributeKvCompositeKey getAttributeKvCompositeKey(EntityId entityId, String attributeType, String attributeKey){
+    private AttributeKvCompositeKey getAttributeKvCompositeKey(EntityId entityId, String attributeType, String attributeKey) {
         return new AttributeKvCompositeKey(
                 entityId.getEntityType(),
                 fromTimeUUID(entityId.getId()),

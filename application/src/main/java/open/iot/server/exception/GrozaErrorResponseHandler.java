@@ -3,9 +3,10 @@ package open.iot.server.exception;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import open.iot.server.common.data.exception.GrozaErrorCode;
 import open.iot.server.common.data.exception.GrozaException;
-import lombok.extern.slf4j.Slf4j;
 import open.iot.server.service.security.exception.AuthMethodNotSupportedException;
 import open.iot.server.service.security.exception.JwtExpiredTokenException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,14 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @author james mu
- * @date 19-3-18 下午6:18
- * @description
- */
+
 @Component
-@Slf4j
 public class GrozaErrorResponseHandler implements AccessDeniedHandler {
+
+    private static final Logger log = LoggerFactory.getLogger("GrozaErrorResponseHandler");
 
     @Autowired
     private ObjectMapper mapper;

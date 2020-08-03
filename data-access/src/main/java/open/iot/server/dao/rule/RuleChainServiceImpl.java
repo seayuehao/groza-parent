@@ -11,19 +11,20 @@ import open.iot.server.common.data.page.TextPageData;
 import open.iot.server.common.data.page.TextPageLink;
 import open.iot.server.common.data.relation.EntityRelation;
 import open.iot.server.common.data.relation.RelationTypeGroup;
+import open.iot.server.common.data.rule.NodeConnectionInfo;
+import open.iot.server.common.data.rule.RuleChain;
+import open.iot.server.common.data.rule.RuleChainConnectionInfo;
+import open.iot.server.common.data.rule.RuleChainMetaData;
+import open.iot.server.common.data.rule.RuleNode;
 import open.iot.server.dao.entity.AbstractEntityService;
 import open.iot.server.dao.exception.DataValidationException;
 import open.iot.server.dao.service.DataValidator;
 import open.iot.server.dao.service.PaginatedRemover;
 import open.iot.server.dao.service.Validator;
 import open.iot.server.dao.tenant.TenantDao;
-import lombok.extern.slf4j.Slf4j;
-import open.iot.server.common.data.rule.NodeConnectionInfo;
-import open.iot.server.common.data.rule.RuleChain;
-import open.iot.server.common.data.rule.RuleChainConnectionInfo;
-import open.iot.server.common.data.rule.RuleChainMetaData;
-import open.iot.server.common.data.rule.RuleNode;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +35,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-/**
- * @author james mu
- * @date 19-2-25 下午1:28
- * @description
- */
+
 @Service
-@Slf4j
 public class RuleChainServiceImpl extends AbstractEntityService implements RuleChainService {
+
+    private static final Logger log = LoggerFactory.getLogger("RuleChainService");
 
     @Autowired
     private RuleChainDao ruleChainDao;

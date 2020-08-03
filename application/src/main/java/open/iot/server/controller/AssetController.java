@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author james mu
- * @date 19-1-31 上午10:35
- * @description
- */
+
 @RestController
 @RequestMapping("/api")
 public class AssetController extends BaseController {

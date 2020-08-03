@@ -24,10 +24,7 @@ import java.util.*;
 import static open.iot.server.common.data.UUIDConverter.fromTimeUUID;
 import static open.iot.server.common.data.UUIDConverter.fromTimeUUIDs;
 
-/**
- * @author james mu
- * @date 18-12-21 下午5:08
- */
+
 @Component
 @SqlDao
 public class JpaDeviceDao extends JpaAbstractSearchTextDao<DeviceEntity, Device> implements DeviceDao {

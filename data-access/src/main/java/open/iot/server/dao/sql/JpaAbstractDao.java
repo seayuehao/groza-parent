@@ -6,7 +6,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import open.iot.server.dao.Dao;
 import open.iot.server.dao.DaoUtil;
 import open.iot.server.dao.model.BaseEntity;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,20 +16,17 @@ import java.util.UUID;
 
 import static open.iot.server.common.data.UUIDConverter.fromTimeUUID;
 
-/**
- * @author james mu
- * @date 18-12-24 上午11:06
- */
-@Slf4j
-public abstract class JpaAbstractDao<E extends BaseEntity<D>,D>
-        extends JpaAbstractDaoListeningExecutorService
-        implements Dao<D> {
+
+public abstract class JpaAbstractDao<E extends BaseEntity<D>, D> extends JpaAbstractDaoListeningExecutorService implements Dao<D> {
+
+    private static final Logger log = LoggerFactory.getLogger("JpaAbstractDao");
 
     protected abstract Class<E> getEntityClass();
 
-    protected abstract CrudRepository<E,String> getCrudRepository();
+    protected abstract CrudRepository<E, String> getCrudRepository();
 
-    protected void setSearchText(E entity){}
+    protected void setSearchText(E entity) {
+    }
 
     @Override
     public List<D> find() {
@@ -46,7 +44,7 @@ public abstract class JpaAbstractDao<E extends BaseEntity<D>,D>
     @Override
     public ListenableFuture<D> findByIdAsync(UUID id) {
         log.debug("Get entity by key async {}", id);
-        return service.submit(()-> DaoUtil.getData(getCrudRepository().findById(fromTimeUUID(id)).get()));
+        return service.submit(() -> DaoUtil.getData(getCrudRepository().findById(fromTimeUUID(id)).get()));
     }
 
     @Override
@@ -55,8 +53,8 @@ public abstract class JpaAbstractDao<E extends BaseEntity<D>,D>
         E entity;
         try {
             entity = getEntityClass().getConstructor(domain.getClass()).newInstance(domain);
-        }catch (Exception e){
-            log.error("Can't create entity for domain object {}",domain,e);
+        } catch (Exception e) {
+            log.error("Can't create entity for domain object {}", domain, e);
             throw new IllegalArgumentException("Can't create entity for domain object {" + domain + "}", e);
         }
         setSearchText(entity);

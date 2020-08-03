@@ -4,10 +4,11 @@ import open.iot.server.common.transport.SessionMsgProcessor;
 import open.iot.server.common.transport.auth.DeviceAuthService;
 import open.iot.server.common.transport.quota.host.HostRequestsQuotaService;
 import open.iot.server.transport.coap.adaptors.CoapTransportAdaptor;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.network.CoapEndpoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -21,11 +22,12 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
 @Service("CoapTransportService")
-@ConditionalOnProperty(prefix = "coap",value = "enabled",havingValue = "true",matchIfMissing = true)
-@Slf4j
+@ConditionalOnProperty(prefix = "coap", value = "enabled", havingValue = "true", matchIfMissing = true)
 public class CoapTransportService {
     private static final String V1 = "v1";
     private static final String API = "api";
+
+    private static final Logger log = LoggerFactory.getLogger("CoapTransportService");
 
     private CoapServer server;
 
@@ -69,7 +71,7 @@ public class CoapTransportService {
 
     private void createResources() {
         CoapResource api = new CoapResource(API);
-        api.add(new CoapTransportResource(processor,authService,adaptor,V1,timeout, quotaService));
+        api.add(new CoapTransportResource(processor, authService, adaptor, V1, timeout, quotaService));
         server.add(api);
     }
 
@@ -79,6 +81,5 @@ public class CoapTransportService {
         this.server.destroy();
         log.info("CoAP transport stopped!");
     }
-
 
 }

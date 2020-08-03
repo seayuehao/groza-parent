@@ -3,12 +3,6 @@ package open.iot.server.service.security.exception;
 import open.iot.server.service.security.model.token.JwtToken;
 import org.springframework.security.core.AuthenticationException;
 
-
-/**
- * @author james mu
- * @date 19-3-18 下午6:24
- * @description
- */
 public class JwtExpiredTokenException extends AuthenticationException {
     private static final long serialVersionUID = -5959543783324224864L;
 

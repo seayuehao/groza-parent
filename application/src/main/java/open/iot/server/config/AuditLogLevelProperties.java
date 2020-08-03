@@ -6,11 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author james mu
- * @date 19-3-20 下午2:54
- * @description
- */
+
 @Configuration
 @ConfigurationProperties(prefix = "audit-log.logging-level")
 public class AuditLogLevelProperties {

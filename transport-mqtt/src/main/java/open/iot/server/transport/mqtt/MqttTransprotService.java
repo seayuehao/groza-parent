@@ -1,34 +1,34 @@
 package open.iot.server.transport.mqtt;
 
 
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ResourceLeakDetector;
 import open.iot.server.common.transport.SessionMsgProcessor;
 import open.iot.server.common.transport.auth.DeviceAuthService;
 import open.iot.server.common.transport.quota.host.HostRequestsQuotaService;
 import open.iot.server.dao.device.DeviceService;
 import open.iot.server.dao.relation.RelationService;
 import open.iot.server.transport.mqtt.adaptors.MqttTransportAdaptor;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.ResourceLeakDetector;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-/**
- * @author james
- * @date 2018年10月29日 19:33
- */
+
 @Service("MqttTransportService")
 @ConditionalOnProperty(prefix = "mqtt", value = "enabled", havingValue = "true", matchIfMissing = false)
-@Slf4j
 public class MqttTransprotService {
+    private static final Logger log = LoggerFactory.getLogger("MqttTransprotService");
 
     private static final String V1 = "v1";
     private static final String DEVICE = "device";

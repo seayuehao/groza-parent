@@ -6,10 +6,7 @@ import open.iot.server.dao.Dao;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-3 下午12:04
- */
+
 public interface TenantDao extends Dao<Tenant> {
     /**
      * Save or update tenant object

@@ -19,24 +19,24 @@ import open.iot.server.dao.model.ModelConstants;
 import open.iot.server.dao.service.DataValidator;
 import open.iot.server.dao.service.PaginatedRemover;
 import open.iot.server.dao.tenant.TenantDao;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static open.iot.server.dao.service.Validator.*;
+import static open.iot.server.dao.service.Validator.validateId;
+import static open.iot.server.dao.service.Validator.validatePageLink;
+import static open.iot.server.dao.service.Validator.validateString;
 
-/**
- * @author james mu
- * @date 19-2-20 下午2:31
- * @description
- */
+
 @Service
-@Slf4j
 public class UserServiceImpl extends AbstractEntityService implements UserService {
+
+    private static final Logger log = LoggerFactory.getLogger("UserService");
 
     private static final int DEFAULT_TOKEN_LENGTH = 30;
     public static final String INCORRECT_USER_ID = "Incorrect userId ";
@@ -239,7 +239,7 @@ public class UserServiceImpl extends AbstractEntityService implements UserServic
                             break;
                         case CUSTOMER_USER:
                             if (tenantId.getId().equals(ModelConstants.NULL_UUID)
-                                    || customerId.getId().equals(ModelConstants.NULL_UUID) ) {
+                                    || customerId.getId().equals(ModelConstants.NULL_UUID)) {
                                 throw new DataValidationException("Customer user should be assigned to customer!");
                             }
                             break;

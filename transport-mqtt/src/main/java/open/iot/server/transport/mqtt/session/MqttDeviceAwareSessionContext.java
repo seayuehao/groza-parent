@@ -12,10 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-/**
- * @author james mu
- * @date 19-1-24 下午3:12
- */
+
 public abstract class MqttDeviceAwareSessionContext extends DeviceAwareSessionContext {
 
     private final ConcurrentMap<MqttTopicMatcher, Integer> mqttQoSMap;

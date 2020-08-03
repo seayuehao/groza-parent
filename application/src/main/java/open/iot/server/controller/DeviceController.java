@@ -80,7 +80,6 @@ public class DeviceController extends BaseController {
         } catch (Exception e) {
             throw handleException(e);
         }
-
     }
 
 }

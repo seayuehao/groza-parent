@@ -10,11 +10,9 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class JsonStringSqlTypeDescriptor
-        extends AbstractJsonSqlTypeDescriptor {
+public class JsonStringSqlTypeDescriptor extends AbstractJsonSqlTypeDescriptor {
 
-    public static final JsonStringSqlTypeDescriptor INSTANCE =
-            new JsonStringSqlTypeDescriptor();
+    public static final JsonStringSqlTypeDescriptor INSTANCE = new JsonStringSqlTypeDescriptor();
 
     @Override
     public <X> ValueBinder<X> getBinder(

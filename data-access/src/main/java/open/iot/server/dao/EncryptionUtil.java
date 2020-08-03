@@ -1,14 +1,9 @@
 package open.iot.server.dao;
 
-import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.crypto.digests.SHA3Digest;
 import org.bouncycastle.pqc.math.linearalgebra.ByteUtils;
 
-/**
- * @author james mu
- * @date 19-1-2 下午3:58
- */
-@Slf4j
+
 public class EncryptionUtil {
 
     private EncryptionUtil() {
@@ -17,8 +12,8 @@ public class EncryptionUtil {
     public static String trimNewLines(String input) {
         return input.replaceAll("-----BEGIN CERTIFICATE-----", "")
                 .replaceAll("-----END CERTIFICATE-----", "")
-                .replaceAll("\n","")
-                .replaceAll("\r","");
+                .replaceAll("\n", "")
+                .replaceAll("\r", "");
     }
 
     public static String getSha3Hash(String data) {

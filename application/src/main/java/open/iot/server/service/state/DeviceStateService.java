@@ -3,11 +3,7 @@ package open.iot.server.service.state;
 import open.iot.server.common.data.Device;
 import open.iot.server.common.data.id.DeviceId;
 
-/**
- * @Author: 穆书伟
- * @Date: 19-4-8 下午1:17
- * @Version 1.0
- */
+
 public interface DeviceStateService {
 
     void onDeviceAdded(Device device);

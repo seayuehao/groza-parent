@@ -19,7 +19,8 @@ import open.iot.server.dao.model.sql.AlarmEntity;
 import open.iot.server.dao.relation.RelationDao;
 import open.iot.server.dao.sql.JpaAbstractDao;
 import open.iot.server.dao.util.SqlDao;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.CrudRepository;
@@ -30,15 +31,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 
-/**
- * @author james mu
- * @date 19-2-21 上午9:52
- * @description
- */
-@Slf4j
-@Component
+
 @SqlDao
+@Component
 public class JpaAlarmDao extends JpaAbstractDao<AlarmEntity, Alarm> implements AlarmDao {
+
+    private static final Logger log = LoggerFactory.getLogger("JpaAlarmDao");
 
     @Autowired
     private AlarmRepository alarmRepository;
@@ -60,11 +58,11 @@ public class JpaAlarmDao extends JpaAbstractDao<AlarmEntity, Alarm> implements A
     public ListenableFuture<Alarm> findLatestByOriginatorAndType(TenantId tenantId, EntityId originator, String type) {
         return service.submit(() -> {
             List<AlarmEntity> latest = alarmRepository.findLatestByOriginatorAndType(
-                UUIDConverter.fromTimeUUID(tenantId.getId()),
-                UUIDConverter.fromTimeUUID(originator.getId()),
-                originator.getEntityType(),
-                type,
-                PageRequest.of(0, 1)
+                    UUIDConverter.fromTimeUUID(tenantId.getId()),
+                    UUIDConverter.fromTimeUUID(originator.getId()),
+                    originator.getEntityType(),
+                    type,
+                    PageRequest.of(0, 1)
             );
             return latest.isEmpty() ? null : DaoUtil.getData(latest.get(0));
         });
@@ -93,8 +91,8 @@ public class JpaAlarmDao extends JpaAbstractDao<AlarmEntity, Alarm> implements A
             List<ListenableFuture<AlarmInfo>> alarmFutures = new ArrayList<>(input.size());
             for (EntityRelation relation : input) {
                 alarmFutures.add(Futures.transform(
-                    findAlarmByIdAsync(relation.getTo().getId()),
-                    AlarmInfo::new, Executors.newSingleThreadExecutor()));
+                        findAlarmByIdAsync(relation.getTo().getId()),
+                        AlarmInfo::new, Executors.newSingleThreadExecutor()));
             }
             return Futures.successfulAsList(alarmFutures);
         }, Executors.newSingleThreadExecutor());

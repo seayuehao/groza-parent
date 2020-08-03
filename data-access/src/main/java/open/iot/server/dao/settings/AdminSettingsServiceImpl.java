@@ -5,19 +5,17 @@ import open.iot.server.common.data.id.AdminSettingsId;
 import open.iot.server.dao.exception.DataValidationException;
 import open.iot.server.dao.service.DataValidator;
 import open.iot.server.dao.service.Validator;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author james mu
- * @date 19-2-28 下午1:40
- * @description
- */
+
 @Service
-@Slf4j
-public class AdminSettingsServiceImpl implements AdminSettingsService{
+public class AdminSettingsServiceImpl implements AdminSettingsService {
+
+    private static final Logger log = LoggerFactory.getLogger("AdminSettingsService");
 
     @Autowired
     private AdminSettingsDao adminSettingsDao;
@@ -26,7 +24,7 @@ public class AdminSettingsServiceImpl implements AdminSettingsService{
     public AdminSettings findAdminSettingsById(AdminSettingsId adminSettingsId) {
         log.trace("Executing findAdminSettingsById [{}]", adminSettingsId);
         Validator.validateId(adminSettingsId, "Incorrect adminSettingsId " + adminSettingsId);
-        return  adminSettingsDao.findById(adminSettingsId.getId());
+        return adminSettingsDao.findById(adminSettingsId.getId());
     }
 
     @Override
@@ -43,8 +41,7 @@ public class AdminSettingsServiceImpl implements AdminSettingsService{
         return adminSettingsDao.save(adminSettings);
     }
 
-    private DataValidator<AdminSettings> adminSettingsValidator =
-            new DataValidator<AdminSettings>() {
+    private DataValidator<AdminSettings> adminSettingsValidator = new DataValidator<AdminSettings>() {
 
                 @Override
                 protected void validateCreate(AdminSettings adminSettings) {

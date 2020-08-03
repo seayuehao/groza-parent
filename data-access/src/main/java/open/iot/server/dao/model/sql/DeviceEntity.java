@@ -6,11 +6,9 @@ import open.iot.server.common.data.id.CustomerId;
 import open.iot.server.common.data.id.DeviceId;
 import open.iot.server.common.data.id.TenantId;
 import open.iot.server.dao.model.BaseSqlEntity;
-import open.iot.server.dao.model.SearchTextEntity;
 import open.iot.server.dao.model.ModelConstants;
+import open.iot.server.dao.model.SearchTextEntity;
 import open.iot.server.dao.util.mapping.JsonStringType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -18,15 +16,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.Objects;
 
-/**
- * @author james mu
- * @date 18-12-13 下午4:10
- */
+
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
-@TypeDef(name = "json",typeClass = JsonStringType.class)
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 @Table(name = ModelConstants.DEVICE_COLUMN_FAMILY_NAME)
 public final class DeviceEntity extends BaseSqlEntity<Device> implements SearchTextEntity<Device> {
 
@@ -93,5 +87,68 @@ public final class DeviceEntity extends BaseSqlEntity<Device> implements SearchT
         device.setType(type);
         device.setAdditionalInfo(additionalInfo);
         return device;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public JsonNode getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(JsonNode additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DeviceEntity that = (DeviceEntity) o;
+        return Objects.equals(tenantId, that.tenantId) &&
+                Objects.equals(customerId, that.customerId) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(searchText, that.searchText) &&
+                Objects.equals(additionalInfo, that.additionalInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), tenantId, customerId, type, name, searchText, additionalInfo);
     }
 }

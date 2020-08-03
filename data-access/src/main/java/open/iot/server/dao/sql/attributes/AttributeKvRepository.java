@@ -8,10 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 18-12-11 下午2:04
- */
+
 @SqlDao
 public interface AttributeKvRepository extends CrudRepository<AttributeKvEntity, AttributeKvCompositeKey> {
 
@@ -19,6 +16,4 @@ public interface AttributeKvRepository extends CrudRepository<AttributeKvEntity,
     List<AttributeKvEntity> findAllByEntityTypeAndEntityIdAndAttributeType(EntityType entityType,
                                                                            String entityId,
                                                                            String attributeType);
-
-
 }

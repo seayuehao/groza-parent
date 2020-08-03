@@ -2,10 +2,7 @@ package open.iot.server.transport.mqtt;
 
 import java.util.regex.Pattern;
 
-/**
- * @author james mu
- * @date 19-1-2 下午2:46
- */
+
 public class MqttTopicMatcher {
     private final String topic;
     private final Pattern topicRegex;

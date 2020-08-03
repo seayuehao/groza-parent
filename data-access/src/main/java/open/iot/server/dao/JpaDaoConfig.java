@@ -9,10 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-/**
- * @author james mu
- * @date 18-12-21 下午2:21
- */
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan("open.iot.server.dao.sql")

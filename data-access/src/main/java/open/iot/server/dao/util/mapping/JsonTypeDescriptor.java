@@ -1,12 +1,12 @@
 /**
  * Copyright © 2016-2018 The Thingsboard Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,21 +23,19 @@ import org.hibernate.usertype.DynamicParameterizedType;
 import java.util.Properties;
 
 
-public class JsonTypeDescriptor
-        extends AbstractTypeDescriptor<Object>
-        implements DynamicParameterizedType {
+public class JsonTypeDescriptor extends AbstractTypeDescriptor<Object> implements DynamicParameterizedType {
 
     private Class<?> jsonObjectClass;
 
     @Override
     public void setParameterValues(Properties parameters) {
-        jsonObjectClass = ( (ParameterType) parameters.get( PARAMETER_TYPE ) )
+        jsonObjectClass = ((ParameterType) parameters.get(PARAMETER_TYPE))
                 .getReturnedClass();
 
     }
 
     public JsonTypeDescriptor() {
-        super( Object.class, new MutableMutabilityPlan<Object>() {
+        super(Object.class, new MutableMutabilityPlan<Object>() {
             @Override
             protected Object deepCopyNotNull(Object value) {
                 return JacksonUtil.clone(value);
@@ -47,10 +45,10 @@ public class JsonTypeDescriptor
 
     @Override
     public boolean areEqual(Object one, Object another) {
-        if ( one == another ) {
+        if (one == another) {
             return true;
         }
-        if ( one == null || another == null ) {
+        if (one == null || another == null) {
             return false;
         }
         return JacksonUtil.toJsonNode(JacksonUtil.toString(one)).equals(
@@ -67,24 +65,24 @@ public class JsonTypeDescriptor
         return JacksonUtil.fromString(string, jsonObjectClass);
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     @Override
     public <X> X unwrap(Object value, Class<X> type, WrapperOptions options) {
-        if ( value == null ) {
+        if (value == null) {
             return null;
         }
-        if ( String.class.isAssignableFrom( type ) ) {
+        if (String.class.isAssignableFrom(type)) {
             return (X) toString(value);
         }
-        if ( Object.class.isAssignableFrom( type ) ) {
+        if (Object.class.isAssignableFrom(type)) {
             return (X) JacksonUtil.toJsonNode(toString(value));
         }
-        throw unknownUnwrap( type );
+        throw unknownUnwrap(type);
     }
 
     @Override
     public <X> Object wrap(X value, WrapperOptions options) {
-        if ( value == null ) {
+        if (value == null) {
             return null;
         }
         return fromString(value.toString());

@@ -3,11 +3,7 @@ package open.iot.server.dao.settings;
 import open.iot.server.common.data.AdminSettings;
 import open.iot.server.dao.Dao;
 
-/**
- * @author james mu
- * @date 19-2-28 下午1:26
- * @description
- */
+
 public interface AdminSettingsDao extends Dao<AdminSettings> {
     /**
      * Save or update admin settings object

@@ -7,11 +7,7 @@ import open.iot.server.dao.Dao;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 19-2-20 下午2:13
- * @description
- */
+
 public interface UserDao extends Dao<User> {
     /**
      * Save or update user object
@@ -41,9 +37,9 @@ public interface UserDao extends Dao<User> {
     /**
      * Find customer users by tenantId, customerId and page link.
      *
-     * @param tenantId the tenantId
+     * @param tenantId   the tenantId
      * @param customerId the customerId
-     * @param pageLink the page link
+     * @param pageLink   the page link
      * @return the list of user entities
      */
     List<User> findCustomerUsers(UUID tenantId, UUID customerId, TextPageLink pageLink);

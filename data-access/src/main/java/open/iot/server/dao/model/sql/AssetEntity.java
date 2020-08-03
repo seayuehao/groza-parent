@@ -11,21 +11,15 @@ import open.iot.server.dao.model.BaseSqlEntity;
 import open.iot.server.dao.model.ModelConstants;
 import open.iot.server.dao.model.SearchTextEntity;
 import open.iot.server.dao.util.mapping.JsonStringType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
-/**
- * @author james mu
- * @date 19-1-8 下午4:03
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 @Table(name = ModelConstants.ASSET_COLUMN_FAMILY_NAME)
@@ -97,5 +91,64 @@ public final class AssetEntity extends BaseSqlEntity<Asset> implements SearchTex
         asset.setType(type);
         asset.setAdditionalInfo(additionalInfo);
         return asset;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public JsonNode getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(JsonNode additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AssetEntity that = (AssetEntity) o;
+        return Objects.equals(tenantId, that.tenantId) &&
+                Objects.equals(customerId, that.customerId) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(searchText, that.searchText) &&
+                Objects.equals(additionalInfo, that.additionalInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), tenantId, customerId, name, type, searchText, additionalInfo);
     }
 }

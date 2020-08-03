@@ -3,40 +3,40 @@ package open.iot.server.dao.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import open.iot.server.common.data.BaseData;
 import open.iot.server.dao.exception.DataValidationException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * @author james mu
- * @date 19-1-3 上午11:34
- */
-@Slf4j
+
 public abstract class DataValidator<D extends BaseData<?>> {
+
+    private static final Logger log = LoggerFactory.getLogger("DataValidator");
 
     private static EmailValidator emailValidator = EmailValidator.getInstance();
 
-    public void validate(D data){
+    public void validate(D data) {
         try {
-            if (data == null){
+            if (data == null) {
                 throw new DataValidationException("Data object can't be null!");
             }
             validateDataImpl(data);
-            if (data.getId() == null){
+            if (data.getId() == null) {
                 validateCreate(data);
-            }else {
+            } else {
                 validateUpdate(data);
             }
         } catch (DataValidationException e) {
-            log.error("Data object is invalid: [{}]",e.getMessage());
+            log.error("Data object is invalid: [{}]", e.getMessage());
             throw e;
         }
 
 
     }
+
     protected void validateDataImpl(D data) {
     }
 

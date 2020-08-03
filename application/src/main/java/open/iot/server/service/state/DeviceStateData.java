@@ -2,20 +2,49 @@ package open.iot.server.service.state;
 
 import open.iot.server.common.data.id.DeviceId;
 import open.iot.server.common.data.id.TenantId;
-import lombok.Builder;
-import lombok.Data;
 
-/**
- * @Author: 穆书伟
- * @Date: 19-4-8 下午1:33
- * @Version 1.0
- */
-@Data
-@Builder
+
 public class DeviceStateData {
 
-    private final TenantId tenantId;
-    private final DeviceId deviceId;
+    private TenantId tenantId;
+    private DeviceId deviceId;
 
-    private final DeviceState state;
+    private DeviceState state;
+
+    public DeviceStateData() {
+    }
+
+    public DeviceStateData(TenantId tenantId, DeviceId deviceId, DeviceState state) {
+        this.tenantId = tenantId;
+        this.deviceId = deviceId;
+        this.state = state;
+    }
+
+
+    public void setTenantId(TenantId tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public void setDeviceId(DeviceId deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public void setState(DeviceState state) {
+        this.state = state;
+    }
+
+    public TenantId getTenantId() {
+        return tenantId;
+    }
+
+    public DeviceId getDeviceId() {
+        return deviceId;
+    }
+
+    public DeviceState getState() {
+        return state;
+    }
 }
+
+
+

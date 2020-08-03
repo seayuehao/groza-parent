@@ -8,11 +8,7 @@ import open.iot.server.common.data.kv.TsKvQuery;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-30 下午5:09
- * @description
- */
+
 public interface TimeseriesService {
 
     ListenableFuture<List<TsKvEntry>> findAll(EntityId entityId, List<TsKvQuery> queries);

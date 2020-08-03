@@ -15,11 +15,6 @@ import open.iot.server.common.data.page.TimePageLink;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-2-1 下午1:32
- * @description
- */
 public interface AuditLogService {
 
     TimePageData<AuditLog> findAuditLogsByTenantIdAndCustomerId(TenantId tenantId, CustomerId customerId, TimePageLink pageLink);

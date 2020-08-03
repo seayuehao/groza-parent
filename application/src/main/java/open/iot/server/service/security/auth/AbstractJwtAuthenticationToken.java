@@ -4,11 +4,7 @@ import open.iot.server.service.security.model.SecurityUser;
 import open.iot.server.service.security.model.token.RawAccessJwtToken;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
-/**
- * @author james mu
- * @date 19-3-20 下午2:13
- * @description
- */
+
 public abstract class AbstractJwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = -6212297506742428406L;

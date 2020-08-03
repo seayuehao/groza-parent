@@ -9,10 +9,7 @@ import open.iot.server.common.data.relation.RelationTypeGroup;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-22 上午10:54
- */
+
 public interface RelationService {
 
     ListenableFuture<Boolean> checkRelation(EntityId from, EntityId to, String relationType, RelationTypeGroup typeGroup);

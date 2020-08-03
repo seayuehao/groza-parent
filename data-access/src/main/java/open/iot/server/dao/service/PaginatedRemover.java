@@ -6,10 +6,7 @@ import open.iot.server.common.data.page.TextPageLink;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 19-1-24 下午3:57
- */
+
 public abstract class PaginatedRemover<I, D extends IdBased<?>> {
 
     private static final int DEFAULT_LIMIT = 100;

@@ -8,19 +8,17 @@ import open.iot.server.common.transport.auth.DeviceAuthResult;
 import open.iot.server.common.transport.auth.DeviceAuthService;
 import open.iot.server.dao.device.DeviceCredentialsService;
 import open.iot.server.dao.device.DeviceService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-/**
- * @author james mu
- * @date 18-12-21 上午11:07
- */
-@Slf4j
 @Service
 public class DefaultDeviceAuthService implements DeviceAuthService {
+
+    private static final Logger log = LoggerFactory.getLogger("DefaultDeviceAuthService");
 
     @Autowired
     DeviceService deviceService;

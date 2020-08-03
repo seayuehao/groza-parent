@@ -4,10 +4,7 @@ import open.iot.server.common.data.id.SessionId;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * @author james mu
- * @date 19-1-2 下午1:37
- */
+
 public class MqttSessionId implements SessionId {
     public static final AtomicLong idSeq = new AtomicLong();
 
@@ -16,7 +13,6 @@ public class MqttSessionId implements SessionId {
     public MqttSessionId(){
         this.id = idSeq.incrementAndGet();
     }
-
 
 
     @Override

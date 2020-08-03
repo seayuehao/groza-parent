@@ -26,10 +26,11 @@ import open.iot.server.dao.exception.DataValidationException;
 import open.iot.server.dao.exception.IncorrectParameterException;
 import open.iot.server.dao.model.ModelConstants;
 import open.iot.server.dao.tenant.TenantService;
-import lombok.extern.slf4j.Slf4j;
 import open.iot.server.service.security.model.SecurityUser;
 import open.iot.server.service.state.DeviceStateService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,12 +41,9 @@ import java.util.UUID;
 import static open.iot.server.dao.service.Validator.validateId;
 
 
-/**
- * @author james mu
- * @date 19-1-24 下午4:23
- */
-@Slf4j
 public abstract class BaseController {
+
+    private static final Logger log = LoggerFactory.getLogger("BaseController");
 
     public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
     public static final String YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION = "You don't have permission to perform this operation!";
@@ -125,10 +123,10 @@ public abstract class BaseController {
             validateId(customerId, "Incorrect customerId " + customerId);
             SecurityUser authUser = getCurrentUser();
             if (authUser.getAuthority() == Authority.SYS_ADMIN ||
-                (authUser.getAuthority() != Authority.TENANT_ADMIN &&
-                    (authUser.getCustomerId() == null || !authUser.getCustomerId().equals(customerId)))) {
+                    (authUser.getAuthority() != Authority.TENANT_ADMIN &&
+                            (authUser.getCustomerId() == null || !authUser.getCustomerId().equals(customerId)))) {
                 throw new GrozaException(YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION,
-                    GrozaErrorCode.PERMISSION_DENIED);
+                        GrozaErrorCode.PERMISSION_DENIED);
             }
             Customer customer = customerService.findCustomerById(customerId);
             checkCustomer(customer);
@@ -147,9 +145,9 @@ public abstract class BaseController {
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         SecurityUser authUser = getCurrentUser();
         if (authUser.getAuthority() != Authority.SYS_ADMIN &&
-            (authUser.getTenantId() == null || !authUser.getTenantId().equals(tenantId))) {
+                (authUser.getTenantId() == null || !authUser.getTenantId().equals(tenantId))) {
             throw new GrozaException(YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION,
-                GrozaErrorCode.PERMISSION_DENIED);
+                    GrozaErrorCode.PERMISSION_DENIED);
         }
     }
 
@@ -200,7 +198,7 @@ public abstract class BaseController {
         if (exception instanceof GrozaException) {
             return (GrozaException) exception;
         } else if (exception instanceof IllegalArgumentException || exception instanceof IncorrectParameterException
-            || exception instanceof DataValidationException || cause.contains("IncorrectParameterException")) {
+                || exception instanceof DataValidationException || cause.contains("IncorrectParameterException")) {
             return new GrozaException(exception.getMessage(), GrozaErrorCode.BAD_REQUEST_PARAMS);
         } else if (exception instanceof MessagingException) {
             return new GrozaException("Unable to send mail: " + exception.getMessage(), GrozaErrorCode.GENERAL);
@@ -210,21 +208,17 @@ public abstract class BaseController {
     }
 
     protected <E extends BaseData<I> & HasName,
-        I extends UUIDBased & EntityId> void logEntityAction(I entityId, E entity, CustomerId customerId,
-                                                             ActionType actionType, Exception e, Object... additionalInfo) throws GrozaException {
+            I extends UUIDBased & EntityId> void logEntityAction(I entityId, E entity, CustomerId customerId,
+                                                                 ActionType actionType, Exception e, Object... additionalInfo) throws GrozaException {
         logEntityAction(getCurrentUser(), entityId, entity, customerId, actionType, e, additionalInfo);
     }
 
     protected <E extends BaseData<I> & HasName,
-        I extends UUIDBased & EntityId> void logEntityAction(User user, I entityId, E entity, CustomerId customerId,
-                                                             ActionType actionType, Exception e, Object... additionalInfo) throws GrozaException {
+            I extends UUIDBased & EntityId> void logEntityAction(User user, I entityId, E entity, CustomerId customerId,
+                                                                 ActionType actionType, Exception e, Object... additionalInfo) throws GrozaException {
         if (customerId == null || customerId.isNullUid()) {
             customerId = user.getCustomerId();
         }
-//        if (e == null) {
-//            pushEntityActionToRuleEngine(entityId, entity, user, customerId, actionType, additionalInfo);
-//        }
     }
-
 
 }

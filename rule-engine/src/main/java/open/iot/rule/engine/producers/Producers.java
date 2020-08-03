@@ -4,10 +4,7 @@ import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 
-/**
- * @author james mu
- * @date 2019/5/11 19:08
- */
+
 public class Producers {
 
     public static void PulsarClient() throws PulsarClientException {

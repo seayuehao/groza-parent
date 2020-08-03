@@ -3,6 +3,11 @@ package open.iot.server.transport.coap;
 import open.iot.server.common.data.id.SessionId;
 import open.iot.server.common.data.security.DeviceCredentialsFilter;
 import open.iot.server.common.data.security.DeviceTokenCredentials;
+import open.iot.server.common.msg.session.AdaptorToSessionActorMsg;
+import open.iot.server.common.msg.session.BasicTransportToDeviceSessionActorMsg;
+import open.iot.server.common.msg.session.FeatureType;
+import open.iot.server.common.msg.session.SessionMsgType;
+import open.iot.server.common.msg.session.SessionType;
 import open.iot.server.common.transport.SessionMsgProcessor;
 import open.iot.server.common.transport.adaptor.AdaptorException;
 import open.iot.server.common.transport.auth.DeviceAuthService;
@@ -10,12 +15,6 @@ import open.iot.server.common.transport.quota.QuotaService;
 import open.iot.server.transport.coap.adaptors.CoapTransportAdaptor;
 import open.iot.server.transport.coap.session.CoapExchangeObserverProxy;
 import open.iot.server.transport.coap.session.CoapSessionCtx;
-import lombok.extern.slf4j.Slf4j;
-import open.iot.server.common.msg.session.AdaptorToSessionActorMsg;
-import open.iot.server.common.msg.session.BasicTransportToDeviceSessionActorMsg;
-import open.iot.server.common.msg.session.FeatureType;
-import open.iot.server.common.msg.session.SessionMsgType;
-import open.iot.server.common.msg.session.SessionType;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.Request;
@@ -23,14 +22,17 @@ import org.eclipse.californium.core.network.Exchange;
 import org.eclipse.californium.core.network.ExchangeObserver;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.eclipse.californium.core.server.resources.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 public class CoapTransportResource extends CoapResource {
+
+    private static final Logger log = LoggerFactory.getLogger("CoapTransportResource");
 
     // coap://localhost:port/api/v1/DEVICE_TOKEN/[attributes|telemetry|rpc[/requestId]]
     private static final int ACCESS_TOKEN_POSITION = 3;
@@ -60,7 +62,7 @@ public class CoapTransportResource extends CoapResource {
 
     @Override
     public void handleGET(CoapExchange exchange) {
-        if (quotaService.isQuotaExceeded(exchange.getSourceAddress().getHostAddress())){
+        if (quotaService.isQuotaExceeded(exchange.getSourceAddress().getHostAddress())) {
             log.warn("COAP Quota exceeded for [{}:{}] . Disconnect", exchange.getSourceAddress().getHostAddress(), exchange.getSourcePort());
             exchange.respond(CoAP.ResponseCode.BAD_REQUEST);
             return;
@@ -172,7 +174,7 @@ public class CoapTransportResource extends CoapResource {
             log.debug("Failed to decode payload {}", e);
             exchange.respond(CoAP.ResponseCode.BAD_REQUEST, e.getMessage());
             return Optional.empty();
-        } catch (IllegalArgumentException  | IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException e) {
             log.debug("Failed to process payload {}", e);
             exchange.respond(CoAP.ResponseCode.INTERNAL_SERVER_ERROR, e.getMessage());
         }

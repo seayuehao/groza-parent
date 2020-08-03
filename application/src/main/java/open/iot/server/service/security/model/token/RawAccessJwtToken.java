@@ -14,11 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 
 import java.io.Serializable;
 
-/**
- * @author james mu
- * @date 19-3-20 下午2:16
- * @description
- */
+
 public class RawAccessJwtToken implements JwtToken, Serializable {
 
     private static final long serialVersionUID = -797397445703066079L;

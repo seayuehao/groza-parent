@@ -1,19 +1,26 @@
 package open.iot.server.transport.mqtt;
 
 import com.google.common.io.Resources;
+import io.netty.handler.ssl.SslHandler;
 import open.iot.server.common.data.security.DeviceCredentials;
 import open.iot.server.dao.EncryptionUtil;
 import open.iot.server.dao.device.DeviceCredentialsService;
 import open.iot.server.transport.mqtt.util.SslUtil;
-import io.netty.handler.ssl.SslHandler;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.net.ssl.*;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,10 +30,11 @@ import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-@Slf4j
 @Component("MqttSslHandlerProvider")
-@ConditionalOnProperty(prefix = "mqtt.ssl",value = "enabled",havingValue = "true",matchIfMissing = false)
+@ConditionalOnProperty(prefix = "mqtt.ssl", value = "enabled", havingValue = "true", matchIfMissing = false)
 public class MqttSslHandlerProvider {
+
+    private static final Logger log = LoggerFactory.getLogger("MqttSslHandlerProvider");
 
     @Value("${mqtt.ssl.protocol}")
     private String sslProtocol;
@@ -46,7 +54,7 @@ public class MqttSslHandlerProvider {
     @Autowired
     private DeviceCredentialsService deviceCredentialsService;
 
-    public SslHandler getSslHandler(){
+    public SslHandler getSslHandler() {
         try {
             URL ksUrl = Resources.getResource(keyStoreFile);
             File ksFile = new File(ksUrl.toURI());

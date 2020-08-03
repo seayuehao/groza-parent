@@ -2,10 +2,7 @@ package open.iot.server.transport.coap.session;
 
 import open.iot.server.common.data.id.SessionId;
 
-/**
- * @author james mu
- * @date 19-1-2 下午1:08
- */
+
 public class CoapSessionId implements SessionId {
 
     private final String clientAddress;

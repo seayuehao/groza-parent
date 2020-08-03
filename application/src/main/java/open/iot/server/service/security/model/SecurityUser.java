@@ -9,10 +9,6 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author james mu
- * @date 19-1-24 下午5:22
- */
 public class SecurityUser extends User {
     private static final long serialVersionUID = -797397440703066079L;
 

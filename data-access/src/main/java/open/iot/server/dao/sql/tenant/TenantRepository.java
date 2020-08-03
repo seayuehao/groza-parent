@@ -9,10 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-4 下午5:02
- */
+
 @SqlDao
 public interface TenantRepository extends CrudRepository<TenantEntity, String> {
 

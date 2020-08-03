@@ -9,10 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * @author james
- * @date 2019/1/7 6:03
- */
+
 @SqlDao
 public interface CustomerRepository extends CrudRepository<CustomerEntity, String> {
 

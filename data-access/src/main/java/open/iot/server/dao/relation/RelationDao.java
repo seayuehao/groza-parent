@@ -9,10 +9,7 @@ import open.iot.server.common.data.relation.RelationTypeGroup;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-4 上午9:36
- */
+
 public interface RelationDao {
 
     ListenableFuture<List<EntityRelation>> findAllByFrom(EntityId from, RelationTypeGroup typeGroup);

@@ -1,12 +1,12 @@
 /**
  * Copyright © 2016-2018 The Thingsboard Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,16 +29,17 @@ import open.iot.server.dao.model.BaseEntity;
 import open.iot.server.dao.model.BaseSqlEntity;
 import open.iot.server.dao.model.ModelConstants;
 import open.iot.server.dao.util.mapping.JsonStringType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import java.util.Objects;
 
 
-@Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 @Table(name = ModelConstants.ALARM_COLUMN_FAMILY_NAME)
@@ -128,4 +129,124 @@ public final class AlarmEntity extends BaseSqlEntity<Alarm> implements BaseEntit
         return alarm;
     }
 
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getOriginatorId() {
+        return originatorId;
+    }
+
+    public void setOriginatorId(String originatorId) {
+        this.originatorId = originatorId;
+    }
+
+    public EntityType getOriginatorType() {
+        return originatorType;
+    }
+
+    public void setOriginatorType(EntityType originatorType) {
+        this.originatorType = originatorType;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public AlarmSeverity getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(AlarmSeverity severity) {
+        this.severity = severity;
+    }
+
+    public AlarmStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AlarmStatus status) {
+        this.status = status;
+    }
+
+    public Long getStartTs() {
+        return startTs;
+    }
+
+    public void setStartTs(Long startTs) {
+        this.startTs = startTs;
+    }
+
+    public Long getEndTs() {
+        return endTs;
+    }
+
+    public void setEndTs(Long endTs) {
+        this.endTs = endTs;
+    }
+
+    public Long getAckTs() {
+        return ackTs;
+    }
+
+    public void setAckTs(Long ackTs) {
+        this.ackTs = ackTs;
+    }
+
+    public Long getClearTs() {
+        return clearTs;
+    }
+
+    public void setClearTs(Long clearTs) {
+        this.clearTs = clearTs;
+    }
+
+    public JsonNode getDetails() {
+        return details;
+    }
+
+    public void setDetails(JsonNode details) {
+        this.details = details;
+    }
+
+    public Boolean getPropagate() {
+        return propagate;
+    }
+
+    public void setPropagate(Boolean propagate) {
+        this.propagate = propagate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AlarmEntity that = (AlarmEntity) o;
+        return Objects.equals(tenantId, that.tenantId) &&
+                Objects.equals(originatorId, that.originatorId) &&
+                originatorType == that.originatorType &&
+                Objects.equals(type, that.type) &&
+                severity == that.severity &&
+                status == that.status &&
+                Objects.equals(startTs, that.startTs) &&
+                Objects.equals(endTs, that.endTs) &&
+                Objects.equals(ackTs, that.ackTs) &&
+                Objects.equals(clearTs, that.clearTs) &&
+                Objects.equals(details, that.details) &&
+                Objects.equals(propagate, that.propagate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), tenantId, originatorId, originatorType, type, severity, status, startTs, endTs, ackTs, clearTs, details, propagate);
+    }
 }

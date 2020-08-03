@@ -1,18 +1,13 @@
 package open.iot.server.transport.mqtt.util;
 
 import open.iot.server.dao.EncryptionUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Base64Utils;
 
 import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 
-/**
- * @author james mu
- * @date 19-1-2 下午3:57
- */
-@Slf4j
+
 public class SslUtil {
 
     private SslUtil() {

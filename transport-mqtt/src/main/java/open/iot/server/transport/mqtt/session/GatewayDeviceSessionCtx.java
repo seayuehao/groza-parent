@@ -3,6 +3,15 @@ package open.iot.server.transport.mqtt.session;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.handler.codec.mqtt.MqttFixedHeader;
+import io.netty.handler.codec.mqtt.MqttMessage;
+import io.netty.handler.codec.mqtt.MqttMessageType;
+import io.netty.handler.codec.mqtt.MqttPublishMessage;
+import io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
+import io.netty.handler.codec.mqtt.MqttQoS;
 import open.iot.server.common.data.Device;
 import open.iot.server.common.data.id.SessionId;
 import open.iot.server.common.data.kv.AttributeKvEntry;
@@ -22,24 +31,16 @@ import open.iot.server.common.transport.adaptor.JsonConverter;
 import open.iot.server.common.transport.session.DeviceAwareSessionContext;
 import open.iot.server.transport.mqtt.MqttTopics;
 import open.iot.server.transport.mqtt.MqttTransportHandler;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.UnpooledByteBufAllocator;
-import io.netty.handler.codec.mqtt.*;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @author james mu
- * @date 19-1-23 上午10:02
- */
+
 public class GatewayDeviceSessionCtx extends DeviceAwareSessionContext {
 
     private static final Gson GSON = new Gson();
-    private static final Charset UTF8 = Charset.forName("UTF-8");
     private static final ByteBufAllocator ALLOCATOR = new UnpooledByteBufAllocator(false);
     public static final String DEVICE_PROPERTY = "device";
 
@@ -190,7 +191,7 @@ public class GatewayDeviceSessionCtx extends DeviceAwareSessionContext {
                 new MqttFixedHeader(MqttMessageType.PUBLISH, false, MqttQoS.AT_LEAST_ONCE, false, 0);
         MqttPublishVariableHeader header = new MqttPublishVariableHeader(topic, msgIdSeq.incrementAndGet());
         ByteBuf payload = ALLOCATOR.buffer();
-        payload.writeBytes(GSON.toJson(json).getBytes(UTF8));
+        payload.writeBytes(GSON.toJson(json).getBytes(StandardCharsets.UTF_8));
         return new MqttPublishMessage(mqttFixedHeader, header, payload);
     }
 }

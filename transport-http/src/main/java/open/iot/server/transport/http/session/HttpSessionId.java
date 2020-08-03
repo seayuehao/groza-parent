@@ -4,10 +4,7 @@ import open.iot.server.common.data.id.SessionId;
 
 import java.util.UUID;
 
-/**
- * @author james mu
- * @date 19-1-2 上午11:22
- */
+
 public class HttpSessionId implements SessionId {
 
     private final UUID id;

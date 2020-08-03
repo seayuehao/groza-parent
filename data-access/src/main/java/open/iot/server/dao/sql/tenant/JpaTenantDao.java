@@ -17,10 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author james mu
- * @date 19-1-4 下午5:14
- */
+
 @Component
 @SqlDao
 public class JpaTenantDao extends JpaAbstractSearchTextDao<TenantEntity, Tenant> implements TenantDao {

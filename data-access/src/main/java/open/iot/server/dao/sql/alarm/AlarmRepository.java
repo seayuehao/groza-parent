@@ -10,11 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-2-21 上午9:41
- * @description
- */
+
 @SqlDao
 public interface AlarmRepository extends CrudRepository<AlarmEntity, String> {
 

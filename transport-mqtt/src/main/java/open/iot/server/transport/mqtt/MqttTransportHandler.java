@@ -1,24 +1,6 @@
 package open.iot.server.transport.mqtt;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import open.iot.server.common.data.Device;
-import open.iot.server.common.data.security.DeviceTokenCredentials;
-import open.iot.server.common.data.security.DeviceX509Credentials;
-import open.iot.server.common.msg.core.SessionOpenMsg;
-import open.iot.server.common.msg.session.AdaptorToSessionActorMsg;
-import open.iot.server.common.msg.session.BasicAdaptorToSessionActorMsg;
-import open.iot.server.common.msg.session.BasicTransportToDeviceSessionActorMsg;
-import open.iot.server.common.transport.SessionMsgProcessor;
-import open.iot.server.common.transport.adaptor.AdaptorException;
-import open.iot.server.common.transport.auth.DeviceAuthService;
-import open.iot.server.common.transport.quota.QuotaService;
-import open.iot.server.dao.EncryptionUtil;
-import open.iot.server.dao.device.DeviceService;
-import open.iot.server.dao.relation.RelationService;
-import open.iot.server.transport.mqtt.adaptors.MqttTransportAdaptor;
-import open.iot.server.transport.mqtt.session.DeviceSessionCtx;
-import open.iot.server.transport.mqtt.session.GatewaySessionCtx;
-import open.iot.server.transport.mqtt.util.SslUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.mqtt.MqttConnAckMessage;
@@ -39,8 +21,27 @@ import io.netty.handler.codec.mqtt.MqttUnsubscribeMessage;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import lombok.extern.slf4j.Slf4j;
+import open.iot.server.common.data.Device;
+import open.iot.server.common.data.security.DeviceTokenCredentials;
+import open.iot.server.common.data.security.DeviceX509Credentials;
+import open.iot.server.common.msg.core.SessionOpenMsg;
+import open.iot.server.common.msg.session.AdaptorToSessionActorMsg;
+import open.iot.server.common.msg.session.BasicAdaptorToSessionActorMsg;
+import open.iot.server.common.msg.session.BasicTransportToDeviceSessionActorMsg;
+import open.iot.server.common.transport.SessionMsgProcessor;
+import open.iot.server.common.transport.adaptor.AdaptorException;
+import open.iot.server.common.transport.auth.DeviceAuthService;
+import open.iot.server.common.transport.quota.QuotaService;
+import open.iot.server.dao.EncryptionUtil;
+import open.iot.server.dao.device.DeviceService;
+import open.iot.server.dao.relation.RelationService;
+import open.iot.server.transport.mqtt.adaptors.MqttTransportAdaptor;
+import open.iot.server.transport.mqtt.session.DeviceSessionCtx;
+import open.iot.server.transport.mqtt.session.GatewaySessionCtx;
+import open.iot.server.transport.mqtt.util.SslUtil;
 import org.apache.pulsar.client.api.PulsarClientException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -51,16 +52,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static open.iot.rule.engine.producers.Producers.PulsarClient;
-import static open.iot.server.common.msg.session.SessionMsgType.GET_ATTRIBUTES_REQUEST;
-import static open.iot.server.common.msg.session.SessionMsgType.POST_ATTRIBUTES_REQUEST;
-import static open.iot.server.common.msg.session.SessionMsgType.POST_TELEMETRY_REQUEST;
-import static open.iot.server.common.msg.session.SessionMsgType.SUBSCRIBE_ATTRIBUTES_REQUEST;
-import static open.iot.server.common.msg.session.SessionMsgType.SUBSCRIBE_RPC_COMMANDS_REQUEST;
-import static open.iot.server.common.msg.session.SessionMsgType.TO_DEVICE_RPC_RESPONSE;
-import static open.iot.server.common.msg.session.SessionMsgType.TO_SERVER_RPC_REQUEST;
-import static open.iot.server.common.msg.session.SessionMsgType.UNSUBSCRIBE_ATTRIBUTES_REQUEST;
-import static open.iot.server.common.msg.session.SessionMsgType.UNSUBSCRIBE_RPC_COMMANDS_REQUEST;
 import static io.netty.handler.codec.mqtt.MqttConnectReturnCode.CONNECTION_ACCEPTED;
 import static io.netty.handler.codec.mqtt.MqttConnectReturnCode.CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD;
 import static io.netty.handler.codec.mqtt.MqttConnectReturnCode.CONNECTION_REFUSED_NOT_AUTHORIZED;
@@ -72,14 +63,21 @@ import static io.netty.handler.codec.mqtt.MqttMessageType.UNSUBACK;
 import static io.netty.handler.codec.mqtt.MqttQoS.AT_LEAST_ONCE;
 import static io.netty.handler.codec.mqtt.MqttQoS.AT_MOST_ONCE;
 import static io.netty.handler.codec.mqtt.MqttQoS.FAILURE;
+import static open.iot.rule.engine.producers.Producers.PulsarClient;
+import static open.iot.server.common.msg.session.SessionMsgType.GET_ATTRIBUTES_REQUEST;
+import static open.iot.server.common.msg.session.SessionMsgType.POST_ATTRIBUTES_REQUEST;
+import static open.iot.server.common.msg.session.SessionMsgType.POST_TELEMETRY_REQUEST;
+import static open.iot.server.common.msg.session.SessionMsgType.SUBSCRIBE_ATTRIBUTES_REQUEST;
+import static open.iot.server.common.msg.session.SessionMsgType.SUBSCRIBE_RPC_COMMANDS_REQUEST;
+import static open.iot.server.common.msg.session.SessionMsgType.TO_DEVICE_RPC_RESPONSE;
+import static open.iot.server.common.msg.session.SessionMsgType.TO_SERVER_RPC_REQUEST;
+import static open.iot.server.common.msg.session.SessionMsgType.UNSUBSCRIBE_ATTRIBUTES_REQUEST;
+import static open.iot.server.common.msg.session.SessionMsgType.UNSUBSCRIBE_RPC_COMMANDS_REQUEST;
 
-/**
- * @author james
- * @date 2018年10月23日
- * handle mqtt message
- */
-@Slf4j
+
 public class MqttTransportHandler extends ChannelInboundHandlerAdapter implements GenericFutureListener<Future<? super Void>> {
+
+    private static final Logger log = LoggerFactory.getLogger("MqttTransportHandler");
 
     public static final MqttQoS MAX_SUPPORTED_QOS_LVL = AT_LEAST_ONCE;
 
@@ -354,7 +352,7 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
 
     private MqttMessage createUnSubAckMessage(int msgId) {
         MqttFixedHeader mqttFixedHeader =
-            new MqttFixedHeader(UNSUBACK, false, AT_LEAST_ONCE, false, 0);
+                new MqttFixedHeader(UNSUBACK, false, AT_LEAST_ONCE, false, 0);
         MqttMessageIdVariableHeader mqttMessageIdVariableHeader = MqttMessageIdVariableHeader.from(msgId);
         return new MqttMessage(mqttFixedHeader, mqttMessageIdVariableHeader);
     }
@@ -396,7 +394,7 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
                 ctx.writeAndFlush(createMqttConnAckMsg(CONNECTION_ACCEPTED));
                 connected = true;
                 processor.process(new BasicTransportToDeviceSessionActorMsg(deviceSessionCtx.getDevice(),
-                    new BasicAdaptorToSessionActorMsg(deviceSessionCtx, new SessionOpenMsg())));
+                        new BasicAdaptorToSessionActorMsg(deviceSessionCtx, new SessionOpenMsg())));
                 checkGatewaySession();
             } else {
                 ctx.writeAndFlush(createMqttConnAckMsg(CONNECTION_REFUSED_NOT_AUTHORIZED));
@@ -433,9 +431,9 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
 
     private MqttConnAckMessage createMqttConnAckMsg(MqttConnectReturnCode returnCode) {
         MqttFixedHeader mqttFixedHeader =
-            new MqttFixedHeader(CONNACK, false, AT_MOST_ONCE, false, 0);
+                new MqttFixedHeader(CONNACK, false, AT_MOST_ONCE, false, 0);
         MqttConnAckVariableHeader mqttConnAckVariableHeader =
-            new MqttConnAckVariableHeader(returnCode, true);
+                new MqttConnAckVariableHeader(returnCode, true);
         return new MqttConnAckMessage(mqttFixedHeader, mqttConnAckVariableHeader);
     }
 
@@ -452,7 +450,7 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
 
     private static MqttSubAckMessage createSubAckMessage(Integer msgId, List<Integer> grantedQoSList) {
         MqttFixedHeader mqttFixedHeader =
-            new MqttFixedHeader(SUBACK, false, AT_LEAST_ONCE, false, 0);
+                new MqttFixedHeader(SUBACK, false, AT_LEAST_ONCE, false, 0);
         MqttMessageIdVariableHeader mqttMessageIdVariableHeader = MqttMessageIdVariableHeader.from(msgId);
         MqttSubAckPayload mqttSubAckPayload = new MqttSubAckPayload(grantedQoSList);
         return new MqttSubAckMessage(mqttFixedHeader, mqttMessageIdVariableHeader, mqttSubAckPayload);
@@ -464,9 +462,9 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
 
     public static MqttPubAckMessage createMqttPubAckMsg(int requestId) {
         MqttFixedHeader mqttFixedHeader =
-            new MqttFixedHeader(PUBACK, false, AT_LEAST_ONCE, false, 0);
+                new MqttFixedHeader(PUBACK, false, AT_LEAST_ONCE, false, 0);
         MqttMessageIdVariableHeader mqttMsgIdVariableHeader =
-            MqttMessageIdVariableHeader.from(requestId);
+                MqttMessageIdVariableHeader.from(requestId);
         return new MqttPubAckMessage(mqttFixedHeader, mqttMsgIdVariableHeader);
     }
 

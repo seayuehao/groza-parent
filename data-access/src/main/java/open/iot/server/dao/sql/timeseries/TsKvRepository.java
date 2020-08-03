@@ -13,11 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * @author james mu
- * @date 19-1-30 下午4:56
- * @description
- */
+
 @SqlDao
 public interface TsKvRepository extends CrudRepository<TsKvEntity, TsKvCompositeKey> {
 

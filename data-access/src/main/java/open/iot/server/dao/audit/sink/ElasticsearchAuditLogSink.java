@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import open.iot.server.common.data.audit.AuditLog;
 import open.iot.server.common.data.id.TenantId;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -19,6 +18,8 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseListener;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpMethod;
@@ -28,15 +29,12 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * @author james mu
- * @date 19-2-1 下午4:17
- * @description
- */
+
 @Component
 @ConditionalOnProperty(prefix = "audit_log.sink", value = "type", havingValue = "elasticsearch")
-@Slf4j
 public class ElasticsearchAuditLogSink implements AuditLogSink {
+
+    private static final Logger log = LoggerFactory.getLogger("ElasticsearchAuditLogSink");
 
     private static final String TENANT_PLACEHOLDER = "@{TENANT}";
     private static final String DATE_PLACEHOLDER = "@{DATE}";
@@ -46,16 +44,22 @@ public class ElasticsearchAuditLogSink implements AuditLogSink {
 
     @Value("${audit_log.sink.index_pattern}")
     private String indexPattern;
+
     @Value("${audit_log.sink.scheme_name}")
     private String schemeName;
+
     @Value("${audit_log.sink.host}")
     private String host;
+
     @Value("${audit_log.sink.port}")
     private int port;
+
     @Value("${audit_log.sink.user_name}")
     private String userName;
+
     @Value("${audit_log.sink.password}")
     private String password;
+
     @Value("${audit_log.sink.date_format}")
     private String dateFormat;
 
@@ -65,16 +69,16 @@ public class ElasticsearchAuditLogSink implements AuditLogSink {
     public void init() {
         try {
             log.trace("Adding elastic rest endpoint... host [{}], port [{}], scheme name [{}]",
-                host, port, schemeName);
+                    host, port, schemeName);
             RestClientBuilder builder = RestClient.builder(
-                new HttpHost(host, port, schemeName));
+                    new HttpHost(host, port, schemeName));
 
             if (StringUtils.isNotEmpty(userName) &&
-                StringUtils.isNotEmpty(password)) {
+                    StringUtils.isNotEmpty(password)) {
                 log.trace("...using username [{}] and password ***", userName);
                 final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
                 credentialsProvider.setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(userName, password));
+                        new UsernamePasswordCredentials(userName, password));
                 builder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
             }
 

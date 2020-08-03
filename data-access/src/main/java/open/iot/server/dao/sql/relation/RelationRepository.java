@@ -9,10 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-22 上午11:05
- */
+
 @SqlDao
 public interface RelationRepository
         extends CrudRepository<RelationEntity, RelationCompositeKey>, JpaSpecificationExecutor<RelationEntity> {
@@ -40,9 +37,6 @@ public interface RelationRepository
 
     @Transactional
     RelationEntity save(RelationEntity entity);
-
-//    @Transactional
-//    void delete(RelationCompositeKey id);
 
     @Transactional
     void deleteByFromIdAndFromType(String fromId, String fromType);

@@ -22,11 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * @author james mu
- * @date 19-3-20 下午2:22
- * @description
- */
+
 @Component
 public class JwtTokenFactory {
 

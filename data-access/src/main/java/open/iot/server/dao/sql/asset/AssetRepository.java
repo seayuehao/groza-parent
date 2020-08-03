@@ -9,10 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-8 下午4:12
- */
 @SqlDao
 public interface AssetRepository extends CrudRepository<AssetEntity, String> {
     @Query("SELECT a FROM AssetEntity a WHERE a.tenantId = :tenantId " +

@@ -33,11 +33,7 @@ import java.util.concurrent.Executors;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
-/**
- * @author james mu
- * @date 19-2-1 上午11:11
- * @description
- */
+
 @SqlDao
 @Component
 public class JpaAuditLogDao extends JpaAbstractDao<AuditLogEntity, AuditLog> implements AuditLogDao {

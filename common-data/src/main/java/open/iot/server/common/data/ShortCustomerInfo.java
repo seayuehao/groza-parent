@@ -1,24 +1,14 @@
 package open.iot.server.common.data;
 
 import open.iot.server.common.data.id.CustomerId;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-/**
- * @author james mu
- * @date 19-1-3 下午3:53
- */
-@AllArgsConstructor
+
 public class ShortCustomerInfo {
 
-    @Getter @Setter
     private CustomerId customerId;
 
-    @Getter @Setter
     private String title;
 
-    @Getter @Setter
     private boolean isPublic;
 
     @Override
@@ -35,5 +25,35 @@ public class ShortCustomerInfo {
     @Override
     public int hashCode() {
         return customerId.hashCode();
+    }
+
+    public ShortCustomerInfo(CustomerId customerId, String title, boolean isPublic) {
+        this.customerId = customerId;
+        this.title = title;
+        this.isPublic = isPublic;
+    }
+
+    public CustomerId getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(CustomerId customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
     }
 }

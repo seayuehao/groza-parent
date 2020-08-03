@@ -8,11 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-/**
- * @author james mu
- * @date 19-1-30 下午4:43
- * @description
- */
+
 @SqlDao
 public interface TsKvLatestRepository extends CrudRepository<TsKvLatestEntity, TsKvLatestCompositeKey> {
 

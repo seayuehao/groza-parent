@@ -4,11 +4,7 @@ import open.iot.server.service.security.model.token.JwtToken;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author james mu
- * @date 19-3-18 下午2:12
- * @description
- */
+
 @Configuration
 @ConfigurationProperties(prefix = "security.jwt")
 public class JwtSettings {

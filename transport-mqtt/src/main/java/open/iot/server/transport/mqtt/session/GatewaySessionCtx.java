@@ -1,6 +1,13 @@
 package open.iot.server.transport.mqtt.session;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.mqtt.MqttMessage;
+import io.netty.handler.codec.mqtt.MqttPublishMessage;
 import open.iot.server.common.data.Device;
 import open.iot.server.common.data.id.SessionId;
 import open.iot.server.common.data.kv.BaseAttributeKvEntry;
@@ -21,22 +28,23 @@ import open.iot.server.common.transport.auth.DeviceAuthService;
 import open.iot.server.dao.device.DeviceService;
 import open.iot.server.dao.relation.RelationService;
 import open.iot.server.transport.mqtt.MqttTransportHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.mqtt.MqttMessage;
-import io.netty.handler.codec.mqtt.MqttPublishMessage;
-import lombok.extern.slf4j.Slf4j;
 import open.iot.server.transport.mqtt.adaptors.JsonMqttAdaptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author james mu
- * @date 19-1-23 上午9:57
- */
-@Slf4j
+
 public class GatewaySessionCtx {
+
+    private static final Logger log = LoggerFactory.getLogger("GatewaySessionCtx");
+
     private static final String DEFAULT_DEVICE_TYPE = "default";
     public static final String CAN_T_PARSE_VALUE = "Can't parse value: ";
     public static final String DEVICE_PROPERTY = "device";

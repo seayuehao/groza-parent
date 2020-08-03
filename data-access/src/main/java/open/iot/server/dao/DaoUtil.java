@@ -3,12 +3,12 @@ package open.iot.server.dao;
 import open.iot.server.common.data.id.UUIDBased;
 import open.iot.server.dao.model.ToData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
-/**
- * @author james mu
- * @date 18-12-13 下午1:44
- */
 public abstract class DaoUtil {
 
     private DaoUtil() {

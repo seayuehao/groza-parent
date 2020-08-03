@@ -7,11 +7,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author james mu
- * @date 19-3-18 下午3:05
- * @description
- */
+
 @Configuration
 @ConfigurationProperties(prefix = "spring.mvc.cors")
 public class MvcCorsProperties {

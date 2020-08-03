@@ -8,7 +8,8 @@ import open.iot.server.common.data.kv.TsKvEntry;
 import open.iot.server.common.data.kv.TsKvQuery;
 import open.iot.server.dao.exception.IncorrectParameterException;
 import open.iot.server.dao.service.Validator;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,11 @@ import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-/**
- * @author james mu
- * @date 19-1-30 下午5:16
- * @description
- */
+
 @Service
-@Slf4j
 public class BaseTimeseriesService implements TimeseriesService {
+
+    private static final Logger log = LoggerFactory.getLogger("BaseTimeseriesService");
 
     public static final int INSERTS_PER_ENTRY = 3;
 
@@ -35,7 +33,7 @@ public class BaseTimeseriesService implements TimeseriesService {
     public ListenableFuture<List<TsKvEntry>> findAll(EntityId entityId, List<TsKvQuery> queries) {
         validate(entityId);
         queries.forEach(query -> validate(query));
-        return timeseriesDao.findAllAsync(entityId,queries);
+        return timeseriesDao.findAllAsync(entityId, queries);
     }
 
     @Override
@@ -82,8 +80,8 @@ public class BaseTimeseriesService implements TimeseriesService {
         futures.add(timeseriesDao.save(entityId, tsKvEntry, ttl));
     }
 
-    private static void validate(EntityId entityId){
-        Validator.validateEntityId(entityId,  "Incorrect entityId " + entityId);
+    private static void validate(EntityId entityId) {
+        Validator.validateEntityId(entityId, "Incorrect entityId " + entityId);
     }
 
     private static void validate(TsKvQuery query) {

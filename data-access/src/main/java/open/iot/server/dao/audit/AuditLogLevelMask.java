@@ -1,13 +1,6 @@
 package open.iot.server.dao.audit;
 
-import lombok.Getter;
 
-/**
- * @author james mu
- * @date 19-2-1 下午2:19
- * @description
- */
-@Getter
 public enum  AuditLogLevelMask {
 
     OFF(false, false),
@@ -20,5 +13,13 @@ public enum  AuditLogLevelMask {
     AuditLogLevelMask(boolean write, boolean read){
         this.write = write;
         this.read = read;
+    }
+
+    public boolean isWrite() {
+        return write;
+    }
+
+    public boolean isRead() {
+        return read;
     }
 }

@@ -19,10 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * @author james
- * @date 2019/1/7 6:46
- */
+
 @Component
 @SqlDao
 public class JpaCustomerDao extends JpaAbstractSearchTextDao<CustomerEntity, Customer> implements CustomerDao {
