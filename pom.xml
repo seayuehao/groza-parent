@@ -48,7 +48,7 @@
         <mysql.version>8.0.12</mysql.version>
         <postgresql.driver.version>42.2.12</postgresql.driver.version>
         <cassandra.version>3.5.0</cassandra.version>
-        <bouncycastle.version>1.64</bouncycastle.version>
+        <bouncycastle.version>1.67</bouncycastle.version>
         <commons-validator.version>1.6</commons-validator.version>
         <scala.version>2.11</scala.version>
         <akka.version>2.4.2</akka.version>
