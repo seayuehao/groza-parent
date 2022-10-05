@@ -58,7 +58,7 @@
         <elasticsearch.version>5.0.2</elasticsearch.version>
         <jedis.version>2.9.0</jedis.version>
         <jjwt.version>0.9.0</jjwt.version>
-        <pulsar.version>2.5.1</pulsar.version>
+        <pulsar.version>2.7.5</pulsar.version>
         <caffeine.version>2.8.1</caffeine.version>
     </properties>
 
